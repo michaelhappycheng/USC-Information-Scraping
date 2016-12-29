@@ -1,1 +1,1 @@
-pip install scrapy
+scrapy==1.2
