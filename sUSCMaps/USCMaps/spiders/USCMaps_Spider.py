@@ -3,6 +3,7 @@ from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.loader import XPathItemLoader
 from USCMaps.items import UscmapsItem
 from pymongo import MongoClient
+import os
 
 import json
 
