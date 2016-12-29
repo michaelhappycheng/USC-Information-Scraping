@@ -21,7 +21,7 @@ class USCMaps_Spider(BaseSpider):
         title = hxs.select('//a[contains(@href, "facilities")]/text()').extract()
 
         # storing in the mongo database
-        client = MongoClient(process.env.MONGODB_URI)
+        client = MongoClient(os.environ['MONGODB_URI'])
         db = client.heroku_5s156rtt
         buildings = db.buildings
 

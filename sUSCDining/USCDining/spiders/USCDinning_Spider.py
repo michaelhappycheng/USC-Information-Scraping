@@ -24,7 +24,7 @@ class USCDining_Spider(BaseSpider):
                   #"http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=" + (datetime.datetime.strftime(tomorrow,"%m")+"%2F") + (datetime.datetime.strftime(tomorrow,"%d")+"%2F") + datetime.datetime.strftime(tomorrow,"%Y")]
 
     # storing in the mongo database
-    client = MongoClient(MONGODB_URI)
+    client = MongoClient(os.environ['MONGODB_URI'])
     db = client.heroku_5s156rtt
     dininghalls = db.dininghalls
     # deleting all prexisting dining hall objects in the database
@@ -32,7 +32,7 @@ class USCDining_Spider(BaseSpider):
 
     def parse(self, response):
       # storing in the mongo database
-      client = MongoClient(MONGODB_URI)
+      client = MongoClient(os.environ['MONGODB_URI'])
       db = client.heroku_5s156rtt
       dininghalls = db.dininghalls
       
