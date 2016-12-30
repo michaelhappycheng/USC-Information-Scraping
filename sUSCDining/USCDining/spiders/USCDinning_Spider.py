@@ -44,7 +44,7 @@ class USCDining_Spider(BaseSpider):
       dininghall = {'stations':[]}
 
       cafeTitle = hxs.xpath("//h2[contains(@class, 'fw-accordion-title ui-state-active')]/text()").extract()
-      print cafeTitle[0]
+      print cafeTitle[0].encode('utf-8')
 
       differentSections = hxs.xpath("//div[contains(@class, 'col-sm-6 col-md-4')]")
  
@@ -53,8 +53,8 @@ class USCDining_Spider(BaseSpider):
           mealTimes = differentSections.xpath("h3/text()").extract()
           stations = differentSections.xpath("h4/text()").extract()
           
-          print str(mealTimes).strip("[]").strip('u\'').strip('\'')
-          dininghall.update({'mealtype': str(mealTimes).strip("[]").strip('u\'').strip('\'')})
+          print (mealTimes[0].encode('utf-8')).strip("[]").strip('u\'').strip('\'')
+          dininghall.update({'mealtype': (mealTimes[0].encode('utf-8')).strip("[]").strip('u\'').strip('\'')})
           
           if datetime.datetime.strftime(datetime.date.today(), '%d') in cafeTitle[0]:
             dininghall.update({'date': datetime.datetime.strftime(datetime.date.today(), '%x')})
@@ -73,8 +73,8 @@ class USCDining_Spider(BaseSpider):
           for foodItemSections in foodItemSections:
               foodItems = foodItemSections.xpath("li/text()").extract()
 
-              print stations[i]
-              stationMiniJSON = {'name': str(stations[i]).strip("[]").strip('u\'').strip('\''), 'options':[]}
+              print stations[i].encode('utf-8')
+              stationMiniJSON = {'name': (stations[i].encode('utf-8')).strip("[]").strip('u\'').strip('\''), 'options':[]}
 
               for foodItems in foodItems:
                 print foodItems
@@ -85,7 +85,7 @@ class USCDining_Spider(BaseSpider):
                 foodItemsTags = individualFoodItemsWrapper.xpath("span/i/span/text()").extract()
                 foodMiniJSON = {'name': foodItems.encode('utf-8'), 'tags': []}
                 for foodItemsTags in foodItemsTags:
-                  foodMiniJSON['tags'].append(str(foodItemsTags).strip("[]").strip('u\'').strip('\''))
+                  foodMiniJSON['tags'].append((foodItemsTags.encode('utf-8')).strip("[]").strip('u\'').strip('\''))
                 stationMiniJSON['options'].append(foodMiniJSON)
               dininghall['stations'].append(stationMiniJSON)
               i+=1
