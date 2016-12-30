@@ -103,7 +103,7 @@ class USCViterbi_Spider(BaseSpider):
         prefixURL = "http://viterbi.usc.edu/news/events/"
 
         i = 0
-        while i < len(eventTitle):
+        while i < len(title):
             event =  { "title" : str(title[i]).strip("[]").strip("u").strip("''"), "link" : prefixURL + str(link[i]).strip("[]").strip("u").strip("''"), "date" : date[i], "time" : time[i], "department" : str(department[i]).strip("[]").strip("u").strip("''"), "eventType" : str(eventType[i]).strip("[]").strip("u").strip("''")}
             viterbiCalendar.insert(event)
             i += 1
