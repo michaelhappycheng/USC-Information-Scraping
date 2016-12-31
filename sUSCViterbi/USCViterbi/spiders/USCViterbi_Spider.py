@@ -5,15 +5,21 @@ import os
 from pymongo import MongoClient
 
 import json
-import time
+import datetime
+from dateutil import relativedelta
 
 class USCViterbi_Spider(BaseSpider):
 
     name = "USCViterbi"
-
     allowed_domains = ["http://viterbi.usc.edu/"]
-    start_urls = ["http://viterbi.usc.edu/news/events/?month&date=11/01/2016&"]
 
+    today = datetime.date.today()
+    nextMonth = today + relativedelta.relativedelta(months=1)
+
+    # start_urls = ["http://viterbi.usc.edu/news/events/?month&date=11/01/2016&"]
+
+    start_urls = ["http://viterbi.usc.edu/news/events/?month&date=" + datetime.datetime.strftime(today,"%m")+ "/" + "01" + "/" + datetime.datetime.strftime(today,"%Y"), 
+                  "http://viterbi.usc.edu/news/events/?month&date=" + datetime.datetime.strftime(nextMonth,"%m")+ "/" + "01" + "/" + datetime.datetime.strftime(nextMonth,"%Y")]
 
     def parse(self, response):
 
