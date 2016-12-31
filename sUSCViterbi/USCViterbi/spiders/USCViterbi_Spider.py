@@ -21,16 +21,20 @@ class USCViterbi_Spider(BaseSpider):
     start_urls = ["http://viterbi.usc.edu/news/events/?month&date=" + datetime.datetime.strftime(today,"%m")+ "/" + "01" + "/" + datetime.datetime.strftime(today,"%Y"), 
                   "http://viterbi.usc.edu/news/events/?month&date=" + datetime.datetime.strftime(nextMonth,"%m")+ "/" + "01" + "/" + datetime.datetime.strftime(nextMonth,"%Y")]
 
+    client = MongoClient(os.environ['MONGODB_URI'])
+    db = client.heroku_5s156rtt
+    viterbiCalendar = db.viterbiCalendar
+
+    #deleting all prexisting building objects in the database
+    viterbiCalendar.delete_many({})
+
     def parse(self, response):
 
         # storing in the mongo database
         client = MongoClient(os.environ['MONGODB_URI'])
         db = client.heroku_5s156rtt
         viterbiCalendar = db.viterbiCalendar
-
-        #deleting all prexisting building objects in the database
-        viterbiCalendar.delete_many({})
-
+        
         #declaring json
         event = {'event':[]}
         
