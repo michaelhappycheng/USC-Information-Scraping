@@ -18,7 +18,7 @@ class DailyTrojanNS_Spider(BaseSpider):
                   "http://dailytrojan.com/sports/"]
 
     # storing in the mongo database
-    client = MongoClient('mongodb://heroku_5s156rtt:pjultq9b12db7hemcfl7g3i3s6@ds151917.mlab.com:51917/heroku_5s156rtt')
+    client = MongoClient(os.environ['MONGODB_URI'])
     db = client.heroku_5s156rtt
     DailyTrojanNS = db.DailyTrojanNS
 
@@ -34,7 +34,7 @@ class DailyTrojanNS_Spider(BaseSpider):
         currCategory = currUrl.replace("http://dailytrojan.com/", "").replace("/", "")
         
         # storing in the mongo database
-        client = MongoClient('mongodb://heroku_5s156rtt:pjultq9b12db7hemcfl7g3i3s6@ds151917.mlab.com:51917/heroku_5s156rtt')
+        client = MongoClient(os.environ['MONGODB_URI'])
         db = client.heroku_5s156rtt
         DailyTrojanNS = db.DailyTrojanNS
         
