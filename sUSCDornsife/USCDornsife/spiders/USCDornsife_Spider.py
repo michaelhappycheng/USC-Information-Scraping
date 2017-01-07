@@ -14,11 +14,11 @@ class USCDornsife_Spider(BaseSpider):
 
     # scraping up to the first three pages of events
     start_urls = ["https://dornsife.usc.edu/events/calendar/all/dornsife/1/",
-                  "https://dornsife.usc.edu/events/calendar/all/dornsife/2/", 
+                  "https://dornsife.usc.edu/events/calendar/all/dornsife/2/",
                   "https://dornsife.usc.edu/events/calendar/all/dornsife/3/"]
 
     # storing in the mongo database
-    client = MongoClient(os.environ['MONGODB_URI'])
+    client = MongoClient('mongodb://heroku_5s156rtt:pjultq9b12db7hemcfl7g3i3s6@ds151917.mlab.com:51917/heroku_5s156rtt')
     db = client.heroku_5s156rtt
     dornsifeCalendar = db.dornsifeCalendar
 
@@ -30,10 +30,10 @@ class USCDornsife_Spider(BaseSpider):
 
     def parse(self, response):
         # storing in the mongo database
-        client = MongoClient(os.environ['MONGODB_URI'])
+        client = MongoClient('mongodb://heroku_5s156rtt:pjultq9b12db7hemcfl7g3i3s6@ds151917.mlab.com:51917/heroku_5s156rtt')
         db = client.heroku_5s156rtt
         dornsifeCalendar = db.dornsifeCalendar
-        
+
         hxs = HtmlXPathSelector(response)
 
         title = []
@@ -68,15 +68,15 @@ class USCDornsife_Spider(BaseSpider):
 
                 'January': 1,
                 'February': 2,
-                'March': 3, 
-                'April': 4, 
+                'March': 3,
+                'April': 4,
                 'May': 5,
-                'June': 6, 
-                'July': 7, 
-                'August': 8, 
-                'September': 9, 
-                'October': 10, 
-                'November': 11, 
+                'June': 6,
+                'July': 7,
+                'August': 8,
+                'September': 9,
+                'October': 10,
+                'November': 11,
                 'December': 12,
 
             }[x]
@@ -95,7 +95,7 @@ class USCDornsife_Spider(BaseSpider):
         eventStats = hxs.xpath("//div[contains(@class, 'article-has-img')]")
 
         for eventStats in eventStats:
-            
+
             title.append(eventStats.xpath("h3[contains(@class, 'article-title event-title')]/text()").extract())
 
             convertDate = str(eventStats.xpath("time[contains(@class, 'event-detail ico-cal')]/text()").extract()).strip("[]").strip("u").strip("''")
@@ -124,4 +124,3 @@ class USCDornsife_Spider(BaseSpider):
         #     print str(location[i]).strip("[]").strip("u").strip("''")
         #     print
         #     i += 1
-       
