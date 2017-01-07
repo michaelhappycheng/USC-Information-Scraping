@@ -16,7 +16,7 @@ class USCDining_Spider(BaseSpider):
     today = datetime.date.today()
     tomorrow = today + datetime.timedelta(days=1)
 
-    # grabs the current day 
+    # grabs the current day
     start_urls = ["http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-507&menu_date=" + (datetime.datetime.strftime(today,"%m")+"%2F") + (datetime.datetime.strftime(today,"%d")+"%2F") + datetime.datetime.strftime(today,"%Y"),
                   "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-514&menu_date=" + (datetime.datetime.strftime(today,"%m")+"%2F") + (datetime.datetime.strftime(today,"%d")+"%2F") + datetime.datetime.strftime(today,"%Y"),
                   "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=" + (datetime.datetime.strftime(today,"%m")+"%2F") + (datetime.datetime.strftime(today,"%d")+"%2F") + datetime.datetime.strftime(today,"%Y")]
@@ -36,7 +36,7 @@ class USCDining_Spider(BaseSpider):
       client = MongoClient(os.environ['MONGODB_URI'])
       db = client.heroku_5s156rtt
       dininghalls = db.dininghalls
-      
+
     	# Both of these work
       hxs = HtmlXPathSelector(response)
 
@@ -47,15 +47,15 @@ class USCDining_Spider(BaseSpider):
       print cafeTitle[0].encode('utf-8')
 
       differentSections = hxs.xpath("//div[contains(@class, 'col-sm-6 col-md-4')]")
- 
+
       for differentSections in differentSections:
 
           mealTimes = differentSections.xpath("h3/text()").extract()
           stations = differentSections.xpath("h4/text()").extract()
-          
+
           print (mealTimes[0].encode('utf-8')).strip("[]").strip('u\'').strip('\'')
           dininghall.update({'mealtype': (mealTimes[0].encode('utf-8')).strip("[]").strip('u\'').strip('\'')})
-          
+
           if datetime.datetime.strftime(datetime.date.today(), '%d') in cafeTitle[0]:
             dininghall.update({'date': datetime.datetime.strftime(datetime.date.today(), '%x')})
           if datetime.datetime.strftime(datetime.date.today() + datetime.timedelta(days=1), '%d') in cafeTitle[0]:
