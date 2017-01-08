@@ -77,7 +77,7 @@ class USCDining_Spider(BaseSpider):
               stationMiniJSON = {'name': (stations[i].encode('utf-8')).strip("[]").strip('u\'').strip('\''), 'options':[]}
 
               for foodItems in foodItems:
-                print foodItems
+                print foodItems.encode('utf-8')
                 if "\"" in foodItems:
                   individualFoodItemsWrapper = foodItemSections.xpath("li[contains(., '" + foodItems + "')]")
                 else:
