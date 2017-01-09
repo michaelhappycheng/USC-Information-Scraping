@@ -92,10 +92,11 @@ class USCEvents_Spider(BaseSpider):
             
             title.append(str(eventStats.xpath("div/div/h3[contains(@class, 'summary')]/a/text()").extract()).strip("[]").strip("u").strip("''"))
             link.append(str(eventStats.xpath("div/div/h3[contains(@class, 'summary')]/a/@href").extract()).strip("[]").strip("u").strip("''"))
-            categories.append(str(eventStats.xpath("div/div[contains(@class, 'event_filters')]/h6/a/text()").extract()).strip("[]").strip("u").strip("''"))
-
-            printIt = str(eventStats.xpath("div/div[contains(@class, 'event_filters')]/h6/a/text()").extract()).strip("[]").strip("u").strip("''")
-            print printIt
+            
+            convertCategories = str(eventStats.xpath("div/div[contains(@class, 'event_filters')]/h6/a/text()").extract()).strip("[]").strip("u").strip("''")
+            convertCategories = convertCategories.split("', u'")
+            convertCategories = convertCategories[0]
+            categories.append(convertCategories)
 
             convertDate = str(eventStats.xpath("div/div[contains(@class, 'actionbar grid_container')]/div[contains(@class, 'left')]/div[contains(@class, 'dateright')]/abbr[contains(@class, 'dtstart')]/@title").extract()).strip("[]").strip("u").strip("''")
             AppendDates(convertDate)
