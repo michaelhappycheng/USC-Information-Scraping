@@ -18,7 +18,7 @@ class USCDornsife_Spider(BaseSpider):
                   "https://dornsife.usc.edu/events/calendar/all/dornsife/3/"]
 
     # storing in the mongo database
-    client = MongoClient('mongodb://heroku_5s156rtt:pjultq9b12db7hemcfl7g3i3s6@ds151917.mlab.com:51917/heroku_5s156rtt')
+    client = MongoClient(os.environ['MONGODB_URI'])
     db = client.heroku_5s156rtt
     dornsifeCalendar = db.dornsifeCalendar
 
@@ -30,7 +30,7 @@ class USCDornsife_Spider(BaseSpider):
 
     def parse(self, response):
         # storing in the mongo database
-        client = MongoClient('mongodb://heroku_5s156rtt:pjultq9b12db7hemcfl7g3i3s6@ds151917.mlab.com:51917/heroku_5s156rtt')
+        client = MongoClient(os.environ['MONGODB_URI'])
         db = client.heroku_5s156rtt
         dornsifeCalendar = db.dornsifeCalendar
 
@@ -113,14 +113,3 @@ class USCDornsife_Spider(BaseSpider):
             event =  { "title" : str(title[i]).strip("[]").strip("u").strip("''"), "link" : prefixURL + str(link[i]).strip("[]").strip("u").strip("''"), "date" : date[i], "time" : time[i], "location" : str(location[i]).strip("[]").strip("u").strip("''")}
             dornsifeCalendar.insert(event)
             i += 1
-
-        # debugging purposes
-        # i = 0
-        # while i < len(title):
-        #     print str(title[i]).strip("[]").strip("u").strip("''")
-        #     print prefixURL + str(link[i]).strip("[]").strip("u").strip("''")
-        #     print date[i]
-        #     print str(time[i]).strip("[]").strip("u").strip("''")
-        #     print str(location[i]).strip("[]").strip("u").strip("''")
-        #     print
-        #     i += 1
