@@ -61,39 +61,53 @@ class USCEvents_Spider(BaseSpider):
 
             day = next(lst)[:2]
 
-            print str(month) + '/' + str(day) + '/' + str(year)
-
             date.append(str(month) + '/' + str(day) + '/' + str(year))
 
         def AppendTimes(text):
 
-            text = text.replace("', u'", "").replace("\\n","").replace(" ", "")
+            if(text != ""):
+                text = text.replace("', u'", "").replace("\\n","").replace(" ", "")
+                text = text.replace("pm", "PM")
+                text = text.replace("am", "AM")
+            else:
+                text = "N/A"
 
-            text = text.replace("pm", "PM")
-            text = text.replace("am", "AM")
-            
-            print text
-
-            time.append(text) 
+            return text
 
         def AppendLocation(text):
 
-            text = text[1:]
+            if(text != []):
+                text = text[0].encode('utf-8').strip("[]").strip("u").strip("''")
+                text = text[1:]
+            else:
+                text = "N/A"
 
-            print text
+            return text
 
-            location.append(text)
+        def encodeString(text):
 
+            if(text != []):
+                text = text[0].encode('utf-8').strip("[]").strip("u").strip("''")
+            else:
+                text = "N/A"
+
+            return text
+
+ 
         eventStats = hxs.xpath("//div[contains(@class, 'item event_item vevent')]")
 
         count = 0
 
         for eventStats in eventStats:
             
-            title.append(str(eventStats.xpath("div/div/h3[contains(@class, 'summary')]/a/text()").extract()).strip("[]").strip("u").strip("''"))
-            link.append(str(eventStats.xpath("div/div/h3[contains(@class, 'summary')]/a/@href").extract()).strip("[]").strip("u").strip("''"))
+            convertTitle = eventStats.xpath("div/div/h3[contains(@class, 'summary')]/a/text()").extract()
+            title.append(encodeString(convertTitle))
+
+            convertLink = eventStats.xpath("div/div/h3[contains(@class, 'summary')]/a/@href").extract()
+            link.append(encodeString(convertLink))
             
-            convertCategories = str(eventStats.xpath("div/div[contains(@class, 'event_filters')]/h6/a/text()").extract()).strip("[]").strip("u").strip("''")
+            convertCategories = eventStats.xpath("div/div[contains(@class, 'event_filters')]/h6/a/text()").extract()
+            convertCategories = encodeString(convertCategories)
             convertCategories = convertCategories.split("', u'")
             convertCategories = convertCategories[0]
             categories.append(convertCategories)
@@ -102,12 +116,13 @@ class USCEvents_Spider(BaseSpider):
             AppendDates(convertDate)
 
             convertTime = str(eventStats.xpath("div/div[contains(@class, 'actionbar grid_container')]/div[contains(@class, 'left')]/div[contains(@class, 'dateright')]/abbr[contains(@class, 'dtstart')]/text()").extract()).strip("[]").strip("u").strip("''")
-            AppendTimes(convertTime)
+            time.append(AppendTimes(convertTime))
 
-            convertLocation = str(eventStats.xpath("div/div[contains(@class, 'actionbar grid_container')]/div[contains(@class, 'left')]/div[contains(@class, 'location')]/a[contains(@class, 'event_item_venue')]/text()").extract()).strip("[]").strip("u").strip("''")
-            AppendLocation(convertLocation)
+            convertLocation = eventStats.xpath("div/div[contains(@class, 'actionbar grid_container')]/div[contains(@class, 'left')]/div[contains(@class, 'location')]/a[contains(@class, 'event_item_venue')]/text()").extract()
+            location.append(AppendLocation(convertLocation))
 
-            description.append(str(eventStats.xpath("div/h4[contains(@class, 'description')]/text()").extract()).strip("[]").strip("u").strip("''"))
+            convertDescription = eventStats.xpath("div/h4[contains(@class, 'description')]/text()").extract()
+            description.append(encodeString(convertDescription))
 
             count += 1
 
