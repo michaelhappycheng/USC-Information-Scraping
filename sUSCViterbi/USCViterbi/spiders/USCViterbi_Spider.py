@@ -35,7 +35,7 @@ class USCViterbi_Spider(BaseSpider):
         db = client.heroku_5s156rtt
         viterbiCalendar = db.viterbiCalendar
         
-        #declaring json
+        # declaring json
         event = {'event':[]}
         
         hxs = HtmlXPathSelector(response)
@@ -46,8 +46,8 @@ class USCViterbi_Spider(BaseSpider):
         time = []
         department =  []
         eventType = []
+        location = []
 
-        # converting to standard date function
         # converting to standard date function
         def AppendDates(text):
 
@@ -116,23 +116,28 @@ class USCViterbi_Spider(BaseSpider):
             link.append(encodeString(convertLink))
 
 
-        eventStats = hxs.xpath("//div[contains(@class, 'event_stats')]")
+        eventStats = hxs.xpath("//div[contains(@id, 'events')]/ul/li")
 
         for eventStats in eventStats:
 
-            parseDate = str(eventStats.xpath("p/strong/text()").extract()).strip("[]").strip("u").strip("''")
+            parseDate = str(eventStats.xpath("div[contains(@class, 'event_stats')]/p/strong/text()").extract()).strip("[]").strip("u").strip("''")
             AppendDates(parseDate)
+            
+            print parseDate
 
-            convertDepartment = eventStats.xpath("p[2]/text()").extract()
+            convertDepartment = eventStats.xpath("div[contains(@class, 'event_stats')]/p[2]/text()").extract()
             department.append(encodeString(convertDepartment))
 
-            convertEventType = eventStats.xpath("p[3]/text()").extract()
+            convertEventType = eventStats.xpath("div[contains(@class, 'event_stats')]/p[3]/text()").extract()
             eventType.append(encodeString(convertEventType))
+
+            convertLocation = eventStats.xpath("p[contains(text(), 'Location: ')]/a/text()").extract()
+            location.append(encodeString(convertLocation))
 
         prefixURL = "http://viterbi.usc.edu/news/events/"
 
         i = 0
         while i < len(title):
-            event =  { "title" : str(title[i]).strip("[]").strip("u").strip("''"), "link" : prefixURL + str(link[i]).strip("[]").strip("u").strip("''"), "date" : date[i], "time" : time[i], "department" : str(department[i]).strip("[]").strip("u").strip("''"), "eventType" : str(eventType[i]).strip("[]").strip("u").strip("''")}
+            event =  { "title" : title[i], "link" : prefixURL + str(link[i]), "date" : date[i], "time" : time[i], "department" : department[i], "eventType" : eventType[i], "location" : location[i]}
             viterbiCalendar.insert(event)
             i += 1
