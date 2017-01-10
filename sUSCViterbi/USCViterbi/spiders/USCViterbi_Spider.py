@@ -61,9 +61,9 @@ class USCViterbi_Spider(BaseSpider):
             day = next(lst)[:2]
             year = next(lst)[2:]
 
-            print 0 + str(month) + '/' + str(day) + '/' + str(year)
+            print str(0) + str(month) + '/' + str(day) + '/' + str(year)
 
-            date.append(0 + str(month) + '/' + str(day) + '/' + str(year))
+            date.append(str(0) + str(month) + '/' + str(day) + '/' + str(year))
 
             if(len(text) == 10):
 
