@@ -37,7 +37,10 @@ class USCDining_Spider(BaseSpider):
       db = client.heroku_5s156rtt
       dininghalls = db.dininghalls
 
-    	# Both of these work
+      currUrl = response.request.url
+      currDate = currUrl.replace("http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=", "")
+
+      # Both of these work
       hxs = HtmlXPathSelector(response)
 
       #declaring json
@@ -56,10 +59,12 @@ class USCDining_Spider(BaseSpider):
           print (mealTimes[0].encode('utf-8')).strip("[]").strip('u\'').strip('\'')
           dininghall.update({'mealtype': (mealTimes[0].encode('utf-8')).strip("[]").strip('u\'').strip('\'')})
 
-          if datetime.datetime.strftime(datetime.date.today(), '%d') in cafeTitle[0]:
-            dininghall.update({'date': datetime.datetime.strftime(datetime.date.today(), '%x')})
-          if datetime.datetime.strftime(datetime.date.today() + datetime.timedelta(days=1), '%d') in cafeTitle[0]:
-            dininghall.update({'date': datetime.datetime.strftime(datetime.date.today() + datetime.timedelta(days=1), '%x')})
+          dininghall.update({'date': currDate})
+
+          # if datetime.datetime.strftime(datetime.date.today(), '%d') in cafeTitle[0]:
+          #   dininghall.update({'date': datetime.datetime.strftime(datetime.date.today(), '%x')})
+          # if datetime.datetime.strftime(datetime.date.today() + datetime.timedelta(days=1), '%d') in cafeTitle[0]:
+          #   dininghall.update({'date': datetime.datetime.strftime(datetime.date.today() + datetime.timedelta(days=1), '%x')})
           if "Kitchen" in cafeTitle[0]:
             dininghall.update({'name': 'EVK'})
           if "Parkside" in cafeTitle[0]:
