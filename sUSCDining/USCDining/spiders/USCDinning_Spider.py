@@ -38,7 +38,7 @@ class USCDining_Spider(BaseSpider):
       dininghalls = db.dininghalls
 
       currUrl = response.request.url
-      currDate = currUrl.replace("http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=", "")
+      currDate = currUrl.replace("http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=", "").replace("%2F", "/")
 
       # Both of these work
       hxs = HtmlXPathSelector(response)
