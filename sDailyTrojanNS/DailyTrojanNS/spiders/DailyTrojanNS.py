@@ -46,6 +46,7 @@ class DailyTrojanNS_Spider(BaseSpider):
         category = []
 
         # converting to standard date form
+        # converting to standard date form
         def AppendDates(text):
 
             text = text.split('-')
@@ -63,6 +64,16 @@ class DailyTrojanNS_Spider(BaseSpider):
 
             date.append(str(month) + '/' + str(day) + '/' + str(year))
 
+        def encodeString(text):
+
+            if(text != []):
+                text = text[0].encode('utf-8').strip("[]").strip("u").strip("''")
+            else:
+                text = "N/A"
+
+            print text
+
+            return text
 
         eventStats = hxs.xpath("//div[contains(@class, 'av-magazine-group sort_all')]/article")
 
@@ -70,9 +81,11 @@ class DailyTrojanNS_Spider(BaseSpider):
 
         for eventStats in eventStats:
             
-            title.append(str(eventStats.xpath("div[contains(@class, 'av-magazine-content-wrap')]/header/h3/a/text()").extract()).strip("[]").strip("u").strip("''"))
+            convertTitle = eventStats.xpath("div[contains(@class, 'av-magazine-content-wrap')]/header/h3/a/text()").extract()
+            title.append(encodeString(convertTitle))
 
-            link.append(str(eventStats.xpath("div[contains(@class, 'av-magazine-content-wrap')]/header/h3/a/@href").extract()).strip("[]").strip("u").strip("''"))
+            convertLink = eventStats.xpath("div[contains(@class, 'av-magazine-content-wrap')]/header/h3/a/@href").extract()
+            link.append(encodeString(convertLink))
 
             convertDate = str(eventStats.xpath("div[contains(@class, 'av-magazine-content-wrap')]/header/time/@datetime").extract()).strip("[]").strip("u").strip("''")
             AppendDates(convertDate)
@@ -84,7 +97,7 @@ class DailyTrojanNS_Spider(BaseSpider):
 
         print count
 
-        # inserting into the mongo database
+        inserting into the mongo database
         i = 0
         while i < len(title):
             headline =  { "title" : title[i], "link" : link[i], "date" : date[i], "category" : category[i]}

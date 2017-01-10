@@ -47,6 +47,7 @@ class DailyTrojanLO_Spider(BaseSpider):
         category = []
 
         # converting to standard date form
+        # converting to standard date form
         def AppendDates(text):
 
             text = text.split('-')
@@ -64,6 +65,14 @@ class DailyTrojanLO_Spider(BaseSpider):
 
             date.append(str(month) + '/' + str(day) + '/' + str(year))
 
+        def encodeString(text):
+
+            if(text != []):
+                text = text[0].encode('utf-8').strip("[]").strip("u").strip("''")
+            else:
+                text = "N/A"
+
+            return text
 
         eventStats = hxs.xpath("//article")
 
@@ -73,15 +82,13 @@ class DailyTrojanLO_Spider(BaseSpider):
             
             # title
             convertTitle = eventStats.xpath("h2[contains(@class, 'post-title entry-title')]/a/@title").extract()
-            # encoding out unicode to ASCII
-            convertTitle = convertTitle[0].encode('utf-8')
+            convertTitle = encodeString(convertTitle)
             convertTitle = convertTitle.replace("Permanent Link: ", "")
             title.append(convertTitle)
 
             # link 
             convertLink = eventStats.xpath("h2[contains(@class, 'post-title entry-title')]/a/@href").extract()
-            convertLink = convertLink[0].encode('utf-8')
-            link.append(convertLink)
+            link.append(encodeString(convertLink))
 
             # date
             convertDate = eventStats.xpath("div[contains(@class, 'entry-content-wrapper clearfix standard-content')]/header/span/time/@datetime").extract()
@@ -90,12 +97,7 @@ class DailyTrojanLO_Spider(BaseSpider):
 
             # description
             convertDescription = eventStats.xpath("div[contains(@class, 'entry-content-wrapper clearfix standard-content')]/div[contains(@class, 'entry-content')]/text()").extract()
-            # error checking
-            if(convertDescription == []):
-                description.append("N/A")
-            else:
-                convertDescription = convertDescription[0].encode('utf-8')
-                description.append(convertDescription)
+            description.append(encodeString(convertDescription))
 
             category.append(currCategory)
 

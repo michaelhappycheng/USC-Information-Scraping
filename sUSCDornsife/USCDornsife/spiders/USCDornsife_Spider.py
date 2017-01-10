@@ -83,26 +83,42 @@ class USCDornsife_Spider(BaseSpider):
 
         def AppendTimes(text):
 
+            text = (encodeString(text))
+
             text = text.replace("to", "-")
             text = text.replace(" ", "")
 
-            time.append(text.strip("[]").strip("u").strip("''"))
+            time.append(text)
+
+        def encodeString(text):
+
+            if(text != []):
+                text = text[0].encode('utf-8').strip("[]").strip("u").strip("''")
+            else:
+                text = "N/A"
+
+            print text
+
+            return text
 
         eventLink = hxs.xpath("//a[contains(@class, 'event-item article cf')]")
         for eventLink in eventLink:
-            link.append(eventLink.xpath("@href").extract())
+            convertLink = eventLink.xpath("@href").extract()
+            link.append(encodeString(convertLink))
 
         eventStats = hxs.xpath("//div[contains(@class, 'article-has-img')]")
 
         for eventStats in eventStats:
 
-            title.append(eventStats.xpath("h3[contains(@class, 'article-title event-title')]/text()").extract())
+            convertTitle = eventStats.xpath("h3[contains(@class, 'article-title event-title')]/text()").extract()
+            title.append(encodeString(convertTitle))
 
             convertDate = str(eventStats.xpath("time[contains(@class, 'event-detail ico-cal')]/text()").extract()).strip("[]").strip("u").strip("''")
             AppendDates(convertDate)
 
-            convertTime = str(eventStats.xpath("time[contains(@class, 'event-detail ico-clock')]/text()").extract())
+            convertTime = eventStats.xpath("time[contains(@class, 'event-detail ico-clock')]/text()").extract()
             AppendTimes(convertTime)
+
 
             location.append(eventStats.xpath("time[contains(@class, 'event-detail ico-location')]/text()").extract())
 

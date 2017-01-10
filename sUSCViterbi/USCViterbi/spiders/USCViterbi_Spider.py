@@ -48,6 +48,7 @@ class USCViterbi_Spider(BaseSpider):
         eventType = []
 
         # converting to standard date function
+        # converting to standard date function
         def AppendDates(text):
 
             text = text.split()
@@ -94,10 +95,25 @@ class USCViterbi_Spider(BaseSpider):
 
             }[x]
 
+        def encodeString(text):
+
+            if(text != []):
+                text = text[0].encode('utf-8').strip("[]").strip("u").strip("''")
+            else:
+                text = "N/A"
+
+            print text
+
+            return text
+
         eventTitle = hxs.xpath("//h3")
         for eventTitle in eventTitle:
-            title.append(eventTitle.xpath("a/text()").extract())
-            link.append(eventTitle.xpath("a/@href").extract())
+
+            convertTitle = eventTitle.xpath("a/text()").extract()
+            title.append(encodeString(convertTitle))
+
+            convertLink = eventTitle.xpath("a/@href").extract()
+            link.append(encodeString(convertLink))
 
 
         eventStats = hxs.xpath("//div[contains(@class, 'event_stats')]")
@@ -106,9 +122,12 @@ class USCViterbi_Spider(BaseSpider):
 
             parseDate = str(eventStats.xpath("p/strong/text()").extract()).strip("[]").strip("u").strip("''")
             AppendDates(parseDate)
-            department.append(eventStats.xpath("p[2]/text()").extract())
-            eventType.append(eventStats.xpath("p[3]/text()").extract())
 
+            convertDepartment = eventStats.xpath("p[2]/text()").extract()
+            department.append(encodeString(convertDepartment))
+
+            convertEventType = eventStats.xpath("p[3]/text()").extract()
+            eventType.append(encodeString(convertEventType))
 
         prefixURL = "http://viterbi.usc.edu/news/events/"
 
@@ -117,16 +136,3 @@ class USCViterbi_Spider(BaseSpider):
             event =  { "title" : str(title[i]).strip("[]").strip("u").strip("''"), "link" : prefixURL + str(link[i]).strip("[]").strip("u").strip("''"), "date" : date[i], "time" : time[i], "department" : str(department[i]).strip("[]").strip("u").strip("''"), "eventType" : str(eventType[i]).strip("[]").strip("u").strip("''")}
             viterbiCalendar.insert(event)
             i += 1
-
-        # debugging purposes
-        i = 0
-        while i < len(title):
-            print str(title[i]).strip("[]").strip("u").strip("''")
-            print prefixURL + str(link[i]).strip("[]").strip("u").strip("''")
-            print date[i]
-            print time[i]
-            print str(department[i]).strip("[]").strip("u").strip("''")
-            print str(eventType[i]).strip("[]").strip("u").strip("''")
-            print
-            i += 1
-       
