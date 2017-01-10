@@ -19,10 +19,10 @@ class USCDining_Spider(BaseSpider):
     # grabs the current day
     start_urls = ["http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-507&menu_date=" + (datetime.datetime.strftime(today,"%m")+"%2F") + (datetime.datetime.strftime(today,"%d")+"%2F") + datetime.datetime.strftime(today,"%Y"),
                   "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-514&menu_date=" + (datetime.datetime.strftime(today,"%m")+"%2F") + (datetime.datetime.strftime(today,"%d")+"%2F") + datetime.datetime.strftime(today,"%Y"),
-                  "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=" + (datetime.datetime.strftime(today,"%m")+"%2F") + (datetime.datetime.strftime(today,"%d")+"%2F") + datetime.datetime.strftime(today,"%Y")]
-                  #"http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-507&menu_date=" + (datetime.datetime.strftime(tomorrow,"%m")+"%2F") + (datetime.datetime.strftime(tomorrow,"%d")+"%2F") + datetime.datetime.strftime(tomorrow,"%Y"),
-                  #"http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-514&menu_date=" + (datetime.datetime.strftime(tomorrow,"%m")+"%2F") + (datetime.datetime.strftime(tomorrow,"%d")+"%2F") + datetime.datetime.strftime(tomorrow,"%Y"),
-                  #"http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=" + (datetime.datetime.strftime(tomorrow,"%m")+"%2F") + (datetime.datetime.strftime(tomorrow,"%d")+"%2F") + datetime.datetime.strftime(tomorrow,"%Y")]
+                  "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=" + (datetime.datetime.strftime(today,"%m")+"%2F") + (datetime.datetime.strftime(today,"%d")+"%2F") + datetime.datetime.strftime(today,"%Y"),
+                  "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-507&menu_date=" + (datetime.datetime.strftime(tomorrow,"%m")+"%2F") + (datetime.datetime.strftime(tomorrow,"%d")+"%2F") + datetime.datetime.strftime(tomorrow,"%Y"),
+                  "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-514&menu_date=" + (datetime.datetime.strftime(tomorrow,"%m")+"%2F") + (datetime.datetime.strftime(tomorrow,"%d")+"%2F") + datetime.datetime.strftime(tomorrow,"%Y"),
+                  "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=" + (datetime.datetime.strftime(tomorrow,"%m")+"%2F") + (datetime.datetime.strftime(tomorrow,"%d")+"%2F") + datetime.datetime.strftime(tomorrow,"%Y")]
 
     # storing in the mongo database
     client = MongoClient(os.environ['MONGODB_URI'])
