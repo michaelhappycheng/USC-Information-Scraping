@@ -39,8 +39,8 @@ class USCDining_Spider(BaseSpider):
 
       currUrl = response.request.url
       currDate = currUrl.replace("http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-507&menu_date=", "").replace("%2F", "/")
-      currDate = currUrl.replace("http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-514&menu_date=", "").replace("%2F", "/")
-      currDate = currUrl.replace("http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=", "").replace("%2F", "/")
+      currDate = currDate.replace("http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-514&menu_date=", "").replace("%2F", "/")
+      currDate = currDate.replace("http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=", "").replace("%2F", "/")
 
       # Both of these work
       hxs = HtmlXPathSelector(response)
