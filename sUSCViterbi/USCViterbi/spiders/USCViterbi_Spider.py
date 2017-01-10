@@ -25,8 +25,11 @@ class USCViterbi_Spider(BaseSpider):
     db = client.heroku_5s156rtt
     viterbiCalendar = db.viterbiCalendar
 
-    #deleting all prexisting building objects in the database
+    # deleting all prexisting building objects in the database
     viterbiCalendar.delete_many({})
+
+    # declaring json
+    event = {'event':[]}
 
     def parse(self, response):
 
@@ -34,9 +37,6 @@ class USCViterbi_Spider(BaseSpider):
         client = MongoClient(os.environ['MONGODB_URI'])
         db = client.heroku_5s156rtt
         viterbiCalendar = db.viterbiCalendar
-        
-        # declaring json
-        event = {'event':[]}
         
         hxs = HtmlXPathSelector(response)
 
@@ -60,6 +60,8 @@ class USCViterbi_Spider(BaseSpider):
             month = ConvertMonth(next(lst))
             day = next(lst)[:2]
             year = next(lst)[2:]
+
+            print str(month) + '/' + str(day) + '/' + str(year)
 
             date.append(str(month) + '/' + str(day) + '/' + str(year))
 
@@ -102,8 +104,6 @@ class USCViterbi_Spider(BaseSpider):
             else:
                 text = "N/A"
 
-            print text
-
             return text
 
         eventTitle = hxs.xpath("//h3")
@@ -122,8 +122,6 @@ class USCViterbi_Spider(BaseSpider):
 
             parseDate = str(eventStats.xpath("div[contains(@class, 'event_stats')]/p/strong/text()").extract()).strip("[]").strip("u").strip("''")
             AppendDates(parseDate)
-            
-            print parseDate
 
             convertDepartment = eventStats.xpath("div[contains(@class, 'event_stats')]/p[2]/text()").extract()
             department.append(encodeString(convertDepartment))
