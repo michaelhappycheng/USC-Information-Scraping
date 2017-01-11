@@ -2,6 +2,8 @@ from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.loader import XPathItemLoader
 from pymongo import MongoClient
+from pytz import timezone
+import pytz
 import os
 
 import json
@@ -14,6 +16,7 @@ class USCDining_Spider(BaseSpider):
     allowed_domains = ["http://hospitality.usc.edu/residential-dining-menus/"]
 
     today = datetime.date.today()
+    today= today.astimezone(timezone('US/Pacific'))
     tomorrow = today + datetime.timedelta(days=1)
 
     # grabs the current day
