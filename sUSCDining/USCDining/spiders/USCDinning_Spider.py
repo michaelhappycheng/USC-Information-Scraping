@@ -13,7 +13,7 @@ class USCDining_Spider(BaseSpider):
 
     allowed_domains = ["http://hospitality.usc.edu/residential-dining-menus/"]
 
-    today = datetime.date.today() - datetime.timedelta(hours=8)
+    today = datetime.date.today() - datetime.timedelta(hours=12)
     tomorrow = today + datetime.timedelta(days=1)
 
     # grabs the current day
