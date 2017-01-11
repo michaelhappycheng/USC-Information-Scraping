@@ -1,9 +1,9 @@
+import pytz
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.loader import XPathItemLoader
 from pymongo import MongoClient
 from pytz import timezone
-import pytz
 import os
 
 import json
