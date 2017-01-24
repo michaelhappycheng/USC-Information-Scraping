@@ -97,7 +97,7 @@ class DailyTrojanNS_Spider(BaseSpider):
 
         print count
 
-        inserting into the mongo database
+        # inserting into the mongo database
         i = 0
         while i < len(title):
             headline =  { "title" : title[i], "link" : link[i], "date" : date[i], "category" : category[i]}
