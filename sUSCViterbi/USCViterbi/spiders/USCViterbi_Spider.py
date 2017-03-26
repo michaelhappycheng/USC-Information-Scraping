@@ -16,10 +16,10 @@ class USCViterbi_Spider(BaseSpider):
     today = datetime.date.today()
     nextMonth = today + relativedelta.relativedelta(months=1)
 
-    # start_urls = ["http://viterbi.usc.edu/news/events/?month&date=11/01/2016&"]
+    start_urls = ["http://viterbi.usc.edu/news/events/?month&date=11/01/2016&"]
 
-    start_urls = ["http://viterbi.usc.edu/news/events/?month&date=" + datetime.datetime.strftime(today,"%m")+ "/" + "01" + "/" + datetime.datetime.strftime(today,"%Y"), 
-                  "http://viterbi.usc.edu/news/events/?month&date=" + datetime.datetime.strftime(nextMonth,"%m")+ "/" + "01" + "/" + datetime.datetime.strftime(nextMonth,"%Y")]
+    start_urls = ["http://viterbi.usc.edu/calendar/?month&date=" + datetime.datetime.strftime(today,"%m")+ "/" + "01" + "/" + datetime.datetime.strftime(today,"%Y"),
+                  "http://viterbi.usc.edu/calendar/?month&date=" + datetime.datetime.strftime(nextMonth,"%m")+ "/" + "01" + "/" + datetime.datetime.strftime(nextMonth,"%Y")]
 
     client = MongoClient(os.environ['MONGODB_URI'])
     db = client.heroku_5s156rtt
@@ -37,7 +37,7 @@ class USCViterbi_Spider(BaseSpider):
         client = MongoClient(os.environ['MONGODB_URI'])
         db = client.heroku_5s156rtt
         viterbiCalendar = db.viterbiCalendar
-        
+
         hxs = HtmlXPathSelector(response)
 
         title = []
@@ -81,18 +81,18 @@ class USCViterbi_Spider(BaseSpider):
 
         def ConvertMonth(x):
             return {
-                
+
                 'Jan': 1,
                 'Feb': 2,
-                'Mar': 3, 
-                'Apr': 4, 
+                'Mar': 3,
+                'Apr': 4,
                 'May': 5,
-                'Jun': 6, 
-                'Jul': 7, 
-                'Aug': 8, 
-                'Sep': 9, 
-                'Oct': 10, 
-                'Nov': 11, 
+                'Jun': 6,
+                'Jul': 7,
+                'Aug': 8,
+                'Sep': 9,
+                'Oct': 10,
+                'Nov': 11,
                 'Dec': 12,
 
             }[x]

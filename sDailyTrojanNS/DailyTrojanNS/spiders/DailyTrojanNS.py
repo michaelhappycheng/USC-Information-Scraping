@@ -65,7 +65,7 @@ class DailyTrojanNS_Spider(BaseSpider):
             date.append(str(month) + '/' + str(day) + '/' + str(year))
 
         def encodeString(text):
-
+            
             if(text != []):
                 text = text[0].encode('utf-8').strip("[]").strip("u").strip("''")
             else:
